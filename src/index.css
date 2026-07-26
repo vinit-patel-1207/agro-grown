@@ -1,0 +1,100 @@
+@import 'tailwindcss';
+
+/* ── Agro Grown design tokens (brand colors ONLY, from the official logo) ── */
+@theme {
+  --font-display: 'Fraunces', ui-serif, Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Brand greens */
+  --color-lime: #a5bf38; /* primary — accents, badges, icons, highlights */
+  --color-lime-dark: #8ba52d;
+  --color-moss: #6e8b55; /* secondary — mid tone, borders, hovers */
+  --color-moss-dark: #566e42;
+  --color-forest: #2f4f2f; /* heading + primary CTA background */
+  --color-forest-dark: #223a22;
+
+  /* Neutrals / surfaces */
+  --color-mist: #f5f9ea; /* light green section background */
+  --color-cream: #fbfcf6; /* warm paper background */
+  --color-ink: #374151; /* body text */
+  --color-ink-soft: #5b6472; /* muted text */
+
+  --shadow-soft: 0 1px 2px rgba(34, 58, 34, 0.04), 0 8px 24px -12px rgba(34, 58, 34, 0.14);
+  --shadow-lift: 0 2px 6px rgba(34, 58, 34, 0.06), 0 24px 48px -24px rgba(34, 58, 34, 0.24);
+
+  --radius-xl2: 1.5rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    overflow-x: clip; /* stop viewport-level horizontal scroll → no mobile side gutter */
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    overflow-x: clip; /* clip decorative negative-offset accents; kills mobile side gutters. clip (not hidden) so it won't break position:sticky */
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-forest);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  /* Visible, on-brand focus ring for keyboard users (WCAG 2.2) */
+  :focus-visible {
+    outline: 2px solid var(--color-forest);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--color-lime);
+    color: var(--color-forest-dark);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Subtle branded scrollbar (progressive enhancement) */
+@supports selector(::-webkit-scrollbar) {
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-moss) 55%, transparent);
+    border: 3px solid var(--color-cream);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-moss);
+  }
+}
+
+/* Reusable organic leaf pattern (data-URI, no external request) */
+.leaf-texture {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath d='M60 10c18 12 30 28 30 48s-12 36-30 48c-18-12-30-28-30-48s12-36 30-48z' fill='none' stroke='%232f4f2f' stroke-width='1' opacity='0.05'/%3E%3Cpath d='M60 20v76M60 40c-8-6-16-8-24-6M60 56c8-6 16-8 24-6M60 72c-8-6-16-8-24-6' stroke='%232f4f2f' stroke-width='1' opacity='0.05' fill='none'/%3E%3C/svg%3E");
+}

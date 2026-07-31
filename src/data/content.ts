@@ -200,6 +200,23 @@ export const stats: Stat[] = [
   { value: 100, suffix: '%', label: 'Plant-based purity' },
 ];
 
+/* ── Founder (About page) ── */
+// ponytail: name and role are placeholders — the company deck carries no founder
+// details. Replace both with the real ones; nothing else needs to change.
+// The copy below deliberately sticks to the company's own positioning rather
+// than inventing biography (years of experience, prior roles, qualifications).
+export const founder = {
+  name: 'Mr. Raj Dudhat',
+  role: 'Founder & Managing Director',
+  photo: '/products/Founder.jpeg',
+  quote:
+    'Nature already knows how to heal. Our job is to process it honestly — and never take shortcuts that cost the plant its value.',
+  paragraphs: [
+    'Agro Grown began with a simple conviction: that herbal ingredients deserve the same rigour as any pharmaceutical input. What started as a herbal-ingredients manufacturing brand grew into a full contract-manufacturing partner, serving formulators who care as much about traceability as they do about price.',
+    'That conviction still sets the standard on the floor of our Ahmedabad facility — clean sourcing, in-process checks and honest batch documentation on every order, whether it ships as a boutique trial batch or a bulk export consignment.',
+  ],
+} as const;
+
 /* ── Testimonials ── */
 export interface Testimonial {
   quote: string;

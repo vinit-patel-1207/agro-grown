@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail, Linkedin, Instagram, Facebook } from 'lucide-react';
+import { MapPin, Phone, Mail, Store, Instagram, Facebook } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { company, fullAddress, nav, socials, whatsappLink } from '../../data/site';
+import { company, fullAddress, mapsLink, nav, socials, whatsappLink } from '../../data/site';
 import { categories } from '../../data/products';
 import Container from '../ui/Container';
 import { LeafMark } from '../ui/Decor';
 
 const socialIcons: Record<string, LucideIcon> = {
-  LinkedIn: Linkedin,
+  // lucide has no brand glyphs, so IndiaMART borrows the generic storefront mark.
+  IndiaMART: Store,
   Instagram,
   Facebook,
 };
@@ -101,9 +102,17 @@ export default function Footer() {
           <div className="lg:col-span-3">
             <FooterHeading>Get in touch</FooterHeading>
             <ul className="mt-4 space-y-3 text-sm text-white/70">
-              <li className="flex gap-3">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-lime" />
-                <span>{fullAddress}</span>
+              <li>
+                <a
+                  href={mapsLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Open our address in Google Maps: ${fullAddress}`}
+                  className="flex gap-3 hover:text-lime"
+                >
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-lime" />
+                  <span>{fullAddress}</span>
+                </a>
               </li>
               <li>
                 <a href={company.phoneHref} className="flex gap-3 hover:text-lime">

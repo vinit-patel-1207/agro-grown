@@ -7,7 +7,7 @@ import { FeatureCard } from '../components/sections/Cards';
 import Timeline from '../components/sections/Timeline';
 import Stats from '../components/sections/Stats';
 import { LeafMark, Blob } from '../components/ui/Decor';
-import { whyChoose, timeline } from '../data/content';
+import { whyChoose, timeline, founder } from '../data/content';
 import { cn } from '../lib/cn';
 
 const pillars = [
@@ -87,6 +87,69 @@ export default function About() {
                 working understanding of global markets — helping brands of every size bring
                 trustworthy herbal products to shelf.
               </p>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* Founder */}
+      <Section tone="mist">
+        <div className="grid items-start gap-10 lg:grid-cols-12">
+          <Reveal direction="right" className="lg:col-span-4">
+            <figure className="mx-auto max-w-xs lg:mx-0">
+              {/* ponytail: Founder.png ships with a studio backdrop, not a cutout — so it
+                  gets a rounded frame. Framed, the grey reads as a studio portrait instead
+                  of a stray rectangle on the section tone. Swap in a transparent PNG and
+                  this wrapper can go. aspect-4/5 reserves the space (no CLS). */}
+              <div className="relative">
+                {/* Brand-gradient panel, tilted and offset behind the frame, so the
+                    portrait's neutral studio grey sits on brand colour. */}
+                <div
+                  aria-hidden="true"
+                  className="absolute -inset-3 -rotate-3 rounded-3xl bg-linear-to-br from-forest via-moss to-lime/70"
+                />
+                <LeafMark className="absolute -right-5 -top-5 z-10 h-20 w-20 text-lime" />
+                <div className="relative overflow-hidden rounded-2xl shadow-lift ring-1 ring-white/40">
+                  <img
+                    src={founder.photo}
+                    alt={`${founder.name}, ${founder.role} of Agro Grown`}
+                    loading="lazy"
+                    decoding="async"
+                    className="aspect-4/5 w-full object-cover"
+                  />
+                  {/* Pulls the grey backdrop toward forest so it reads brand-tinted. */}
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 bg-linear-to-t from-forest/30 via-transparent to-transparent"
+                  />
+                </div>
+              </div>
+              <figcaption className="mt-8 text-center lg:text-left">
+                <span className="block font-display text-xl text-forest">{founder.name}</span>
+                <span className="mt-1 block text-sm text-ink-soft">{founder.role}</span>
+              </figcaption>
+            </figure>
+          </Reveal>
+
+          <div className="lg:col-span-8">
+            <SectionHeader
+              align="left"
+              eyebrow="Leadership"
+              title="A word from our founder"
+              description="The people behind the plants — and the standard we hold ourselves to on every batch."
+            />
+            <figure className="mt-6 border-l-2 border-lime pl-5">
+              <blockquote className="font-display text-xl leading-relaxed text-forest">
+                “{founder.quote}”
+              </blockquote>
+              <figcaption className="mt-3 text-sm text-ink-soft">
+                — {founder.name}, {founder.role}
+              </figcaption>
+            </figure>
+            <div className="mt-6 space-y-4 text-sm leading-relaxed text-ink-soft">
+              {founder.paragraphs.map((p) => (
+                <p key={p.slice(0, 32)}>{p}</p>
+              ))}
             </div>
           </div>
         </div>

@@ -100,7 +100,7 @@ export default function Products() {
               )}
             </label>
 
-            <ul className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <ul className="flex gap-2 overflow-x-auto py-2 px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {[{ slug: 'all', name: 'All' }, ...categories].map((c) => (
                 <li key={c.slug}>
                   <button

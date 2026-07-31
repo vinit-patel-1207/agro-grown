@@ -172,7 +172,6 @@ export const products: Product[] = [
     benefits: ['Deep cleansing', 'Oil control', 'Cosmetic grade'],
     icon: Flower2,
     tint: 'lime',
-    featured: true,
     photo: PRODUCT_PHOTO_MULTANI,
   },
   {
@@ -202,8 +201,39 @@ export const products: Product[] = [
     benefits: ['Soothing', 'Hydrating', 'Cosmetic grade'],
     icon: Flower2,
     tint: 'lime',
-    featured: true,
     photo: '/products/Aloe-vara-powder.png',
+  },
+  {
+    slug: 'sea-buckthorn-powder',
+    name: 'Sea Buckthorn Powder',
+    botanical: 'Hippophae rhamnoides',
+    category: 'health-care',
+    categoryName: 'Health Care Ingredients',
+    description:
+      'Berry powder exceptionally rich in vitamin C, carotenoids and omega fatty acids — a nutrient-dense base for immunity, skin and metabolic formulations.',
+    forms: ['Powder', 'Spray-dried'],
+    benefits: ['Vitamin C', 'Omega-rich', 'Antioxidant'],
+    icon: HeartPulse,
+    tint: 'lime',
+    featured: true,
+    // Filenames intentionally match the uploaded assets ("buckthron"), which are
+    // case- and spelling-sensitive on the Linux build host.
+    photo: '/products/sea-buckthron-powder.jpeg',
+  },
+  {
+    slug: 'sea-buckthorn-juice',
+    name: 'Sea Buckthorn Juice',
+    botanical: 'Hippophae rhamnoides',
+    category: 'health-care',
+    categoryName: 'Health Care Ingredients',
+    description:
+      'Cold-processed berry juice retaining the fruit’s natural vitamin C and flavonoids — ready for functional beverages, shots and wellness blends.',
+    forms: ['Juice', 'Concentrate'],
+    benefits: ['Vitamin C', 'Flavonoids', 'Beverage-ready'],
+    icon: CupSoda,
+    tint: 'forest',
+    featured: true,
+    photo: '/products/sea-buckthron-juice.jpeg',
   },
   {
     slug: 'bhringraj-powder',

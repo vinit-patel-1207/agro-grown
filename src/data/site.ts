@@ -1,7 +1,7 @@
 // Central source of truth for company info, navigation and SEO defaults.
 // All figures/contact details are the real Agro Grown data from the company deck.
 
-export const SITE_URL = 'https://www.agrogrown.com';
+export const SITE_URL = 'https://www.theagrogrown.com';
 
 export const company = {
   name: 'Agro Grown',
@@ -34,6 +34,13 @@ export const company = {
 
 export const fullAddress = `${company.address.line1}, ${company.address.line2}, ${company.address.city}, ${company.address.state} ${company.address.postalCode}, ${company.address.country}`;
 
+/**
+ * Clickable directions link, derived from fullAddress so it can't drift.
+ * (`mapEmbed` above is iframe-only — it carries `output=embed`.) Opens Google
+ * Maps on desktop and hands off to the native maps app on mobile.
+ */
+export const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
+
 export const whatsappLink = (message = "Hello Agro Grown, I'd like to enquire about your herbal ingredients.") =>
   `https://wa.me/${company.whatsapp}?text=${encodeURIComponent(message)}`;
 
@@ -52,9 +59,9 @@ export const nav = [
 ] as const;
 
 export const socials = [
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/' },
-  { label: 'Instagram', href: 'https://www.instagram.com/' },
-  { label: 'Facebook', href: 'https://www.facebook.com/' },
+  { label: 'IndiaMART', href: 'https://www.indiamart.com/dudhatenterprise-ahmedabad/' },
+  { label: 'Instagram', href: 'https://www.instagram.com/agro_grown?igsh=YXJqaGc1eXRmZjJt' },
+  { label: 'Facebook', href: 'https://www.facebook.com/people/Agro-Grown/61586775932038/' },
 ] as const;
 
 /** Organization structured data (schema.org) for the home page. */

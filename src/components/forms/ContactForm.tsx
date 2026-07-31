@@ -1,7 +1,14 @@
-import { cloneElement, isValidElement, useEffect, type ReactElement, type ReactNode } from 'react';
+import {
+  cloneElement,
+  isValidElement,
+  useEffect,
+  useState,
+  type ReactElement,
+  type ReactNode,
+} from 'react';
 import { useForm, type UseFormRegisterReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CheckCircle2, ChevronDown, Send, AlertCircle } from 'lucide-react';
+import { CheckCircle2, ChevronDown, Send, AlertCircle, MessageCircle } from 'lucide-react';
 import { categories } from '../../data/products';
 import { catalogue } from '../../data/catalogue';
 import {
@@ -10,6 +17,8 @@ import {
   type ContactValues as FormValues,
   type InquiryType,
 } from '../../lib/contactSchema';
+import { inquiryText, sendInquiry } from '../../lib/sendInquiry';
+import { company, whatsappLink } from '../../data/site';
 import { cn } from '../../lib/cn';
 
 export default function ContactForm({ defaultType = 'general' }: { defaultType?: InquiryType }) {
@@ -18,6 +27,8 @@ export default function ContactForm({ defaultType = 'general' }: { defaultType?:
     handleSubmit,
     watch,
     setValue,
+    setError,
+    clearErrors,
     reset,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<FormValues>({
@@ -40,13 +51,28 @@ export default function ContactForm({ defaultType = 'general' }: { defaultType?:
     setValue('product', '');
   }, [categorySlug, setValue]);
 
-  const onSubmit = async (_values: FormValues) => {
-    // ponytail: no backend yet — simulate an accepted submission.
-    // Wire this to your form endpoint / email service when available.
-    await new Promise((r) => setTimeout(r, 800));
+  // Kept so the success screen can offer the same enquiry over WhatsApp.
+  const [sent, setSent] = useState<FormValues | null>(null);
+
+  const onSubmit = async (values: FormValues) => {
+    clearErrors('root'); // drop any banner from a previous failed attempt
+    // Swap the category slug for its display name so the email/WhatsApp body reads well.
+    const payload = {
+      ...values,
+      category: categories.find((c) => c.slug === values.category)?.name ?? values.category,
+    };
+    try {
+      await sendInquiry(payload);
+    } catch (err) {
+      setError('root', {
+        message: err instanceof Error ? err.message : 'Something went wrong while sending.',
+      });
+      throw err; // keeps isSubmitSuccessful false so the filled form stays put
+    }
+    setSent(payload);
   };
 
-  if (isSubmitSuccessful) {
+  if (isSubmitSuccessful && sent) {
     return (
       <div
         role="status"
@@ -57,20 +83,36 @@ export default function ContactForm({ defaultType = 'general' }: { defaultType?:
         <h3 className="mt-4 text-2xl">Thank you — we’ve got your enquiry</h3>
         <p className="mx-auto mt-2 max-w-md text-sm text-ink-soft">
           Our team typically responds within one business day with samples, specifications and
-          pricing. For anything urgent, message us on WhatsApp.
+          pricing. Want a faster reply? Send the same details on WhatsApp.
         </p>
-        <button
-          type="button"
-          onClick={() => reset({ inquiryType: defaultType, name: '', email: '', message: '' })}
-          className="mt-6 inline-flex items-center gap-2 rounded-full bg-forest px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-forest-dark"
-        >
-          Send another enquiry
-        </button>
+        <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a
+            href={whatsappLink(inquiryText(sent))}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-lime px-6 py-3 text-sm font-semibold text-forest-dark transition-opacity hover:opacity-90"
+          >
+            <MessageCircle className="h-4 w-4" />
+            Send on WhatsApp
+          </a>
+          <button
+            type="button"
+            onClick={() => {
+              setSent(null);
+              reset({ inquiryType: defaultType, name: '', email: '', message: '' });
+            }}
+            className="inline-flex items-center gap-2 rounded-full bg-forest px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-forest-dark"
+          >
+            Send another enquiry
+          </button>
+        </div>
       </div>
     );
   }
 
-  const errorCount = Object.keys(errors).length;
+  // `root` holds send failures, not a field — count it separately from validation errors.
+  const sendError = errors.root?.message;
+  const errorCount = Object.keys(errors).filter((k) => k !== 'root').length;
 
   return (
     <form
@@ -85,6 +127,32 @@ export default function ContactForm({ defaultType = 'general' }: { defaultType?:
         >
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
           <span>Please review the highlighted {errorCount === 1 ? 'field' : 'fields'} below.</span>
+        </div>
+      )}
+
+      {/* A failed send must never lose the enquiry — offer WhatsApp and email as fallbacks. */}
+      {sendError && (
+        <div
+          role="alert"
+          className="mb-6 flex items-start gap-2 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700"
+        >
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+          <span>
+            We couldn’t send your enquiry ({sendError}). Please try again, or reach us directly on{' '}
+            <a
+              href={whatsappLink(inquiryText(watch()))}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold underline"
+            >
+              WhatsApp
+            </a>{' '}
+            or{' '}
+            <a href={company.emailHref} className="font-semibold underline">
+              {company.email}
+            </a>
+            .
+          </span>
         </div>
       )}
 

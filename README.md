@@ -58,7 +58,7 @@ These are intentionally stubbed and clearly marked (`ponytail:` comments):
 2. **Product & category imagery** — the site ships with self-contained brand-gradient thumbnails plus
    the one real product photo (`public/products/multani-mitti.jpg`). To use real photography, add
    `photo` URLs in `src/data/products.ts` (the `PRODUCT_PHOTO_*` knob in `src/data/site.ts`).
-3. **Canonical domain** — set to `https://www.agrogrown.com` in `src/data/site.ts`,
+3. **Canonical domain** — set to `https://www.theagrogrown.com` in `src/data/site.ts`,
    `public/sitemap.xml`, `public/robots.txt`. Update if the live domain differs.
 4. **Social links** — placeholder URLs in `src/data/site.ts` (`socials`).
 
